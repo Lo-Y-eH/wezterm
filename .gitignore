@@ -8,3 +8,14 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# JetBrains IDE files（PyCharm、IntelliJ 等）
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# 系统文件
+.DS_Store
+Thumbs.db

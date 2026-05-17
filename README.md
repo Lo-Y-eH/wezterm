@@ -5,12 +5,22 @@
 ## 项目结构
 
 ```
-wezterm-config/              ← 仓库根目录
-├── wezterm/                 ← WezTerm 配置目录（符号链接目标）
-│   ├── wezterm.lua          ← 入口文件
-│   ├── config/              ← 模块化配置
-│   ├── fonts/               ← 字体文件（随仓库入库）
-│   └── images/              ← 背景图片（随仓库入库）
+./
+├── wezterm.lua              # 入口文件
+├── config/                  # 模块化配置
+│   ├── constants.lua        # 用户可调的共享常量
+│   ├── utils.lua            # OS 检测 / 工具函数
+│   ├── appearance.lua       # 外观：配色 / 窗口 / 光标 / 渲染
+│   ├── fonts.lua            # 字体配置
+│   ├── tab_bar.lua          # 标签栏渲染
+│   ├── background.lua       # 背景图片轮换
+│   ├── keybindings.lua      # 键盘绑定
+│   ├── mouse.lua            # 鼠标绑定 + 超链接规则
+│   ├── shell.lua            # 默认 Shell / 启动菜单 / SSH 域
+│   ├── events.lua           # 事件处理
+│   └── advanced.lua         # 滚动 / 退出 / 剪贴板等高级选项
+├── fonts/                   # 字体文件（纳入版本控制，随仓库下载）
+├── images/                  # 背景图片（纳入版本控制，随仓库下载）
 ├── .gitignore
 └── README.md
 ```
@@ -31,35 +41,21 @@ wezterm-config/              ← 仓库根目录
 
 **Linux / macOS**
 ```bash
-git clone https://github.com/<your-username>/wezterm-config.git ~/wezterm-config
+git clone https://github.com/<your-username>/wezterm.git ~/.config/wezterm
 ```
 
 **Windows（PowerShell）**
 ```powershell
-git clone https://github.com/<your-username>/wezterm-config.git "$env:USERPROFILE\wezterm-config"
+git clone https://github.com/<your-username>/wezterm.git "$env:USERPROFILE\.config\wezterm"
 ```
 
-### 2. 创建符号链接
+克隆完成后，`fonts/` 和 `images/` 目录中的文件已随仓库一起下载，重启 WezTerm 即可生效。
 
-WezTerm 默认在 `~/.config/wezterm/`（Linux/macOS）或 `%USERPROFILE%\.config\wezterm\`（Windows）查找配置。需要将仓库中的 `wezterm/` 目录链接到该位置。
+### 2. 启用背景图片（可选）
 
-**Linux / macOS**
-```bash
-ln -s ~/wezterm-config/wezterm ~/.config/wezterm
-```
-
-**Windows（管理员 PowerShell）**
-```powershell
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\wezterm" -Target "$env:USERPROFILE\wezterm-config\wezterm"
-```
-
-克隆并链接完成后，`fonts/` 和 `images/` 目录中的文件已随仓库一起下载，重启 WezTerm 即可生效。
-
-### 3. 启用背景图片（可选）
-
-1. 打开 `wezterm/wezterm.lua`，取消 `"config.background"` 那行的注释
-2. 在 `wezterm/config/background.lua` 顶部的 `options` 表中修改 `fixed_image` 文件名，或设置 `random = true`
-3. 在 `wezterm/config/appearance.lua` 中将 `window_background_opacity` 调低（建议 `0.85`）
+1. 打开 `wezterm.lua`，取消 `"config.background"` 那行的注释
+2. 在 `config/background.lua` 顶部的 `options` 表中修改 `fixed_image` 文件名，或设置 `random = true`
+3. 在 `config/appearance.lua` 中将 `window_background_opacity` 调低（建议 `0.85`）
 
 ## 键位速查
 
@@ -105,20 +101,20 @@ New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\wezterm" -Target
 
 ## 个性化
 
-各功能模块对应文件（均在 `wezterm/` 目录下）：
+各功能模块对应文件：
 
 | 想改什么 | 编辑哪个文件 |
 |----------|-------------|
-| 字体 / 字号 / 行高 | `wezterm/config/fonts.lua` |
-| 配色 / 透明度 / 亚克力效果 / 窗口边距 | `wezterm/config/appearance.lua` |
-| 光标样式 | `wezterm/config/appearance.lua` |
-| 标签栏样式 | `wezterm/config/tab_bar.lua` |
-| 背景图片 | `wezterm/config/background.lua` |
-| 键位绑定 | `wezterm/config/keybindings.lua` |
-| 鼠标行为 / 超链接规则 | `wezterm/config/mouse.lua` |
-| 默认 Shell / 启动菜单 / SSH | `wezterm/config/shell.lua` |
-| 可切换的配色方案列表 | `wezterm/config/constants.lua` |
-| 滚动行数 / 退出行为 | `wezterm/config/advanced.lua` |
+| 字体 / 字号 / 行高 | `config/fonts.lua` |
+| 配色 / 透明度 / 亚克力效果 / 窗口边距 | `config/appearance.lua` |
+| 光标样式 | `config/appearance.lua` |
+| 标签栏样式 | `config/tab_bar.lua` |
+| 背景图片 | `config/background.lua` |
+| 键位绑定 | `config/keybindings.lua` |
+| 鼠标行为 / 超链接规则 | `config/mouse.lua` |
+| 默认 Shell / 启动菜单 / SSH | `config/shell.lua` |
+| 可切换的配色方案列表 | `config/constants.lua` |
+| 滚动行数 / 退出行为 | `config/advanced.lua` |
 
 ## 依赖
 
