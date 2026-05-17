@@ -2,6 +2,19 @@
 
 个人 WezTerm 终端配置，模块化 Lua 结构，适配 Windows / WSL / macOS / Linux。
 
+## 项目结构
+
+```
+wezterm-config/              ← 仓库根目录
+├── wezterm/                 ← WezTerm 配置目录（符号链接目标）
+│   ├── wezterm.lua          ← 入口文件
+│   ├── config/              ← 模块化配置
+│   ├── fonts/               ← 字体文件（随仓库入库）
+│   └── images/              ← 背景图片（随仓库入库）
+├── .gitignore
+└── README.md
+```
+
 ## 特性
 
 - **模块化**：每个关注点独立文件，改一处不影响其余
@@ -18,21 +31,35 @@
 
 **Linux / macOS**
 ```bash
-git clone https://github.com/<your-username>/wezterm.git ~/.config/wezterm
+git clone https://github.com/<your-username>/wezterm-config.git ~/wezterm-config
 ```
 
 **Windows（PowerShell）**
 ```powershell
-git clone https://github.com/<your-username>/wezterm.git "$env:USERPROFILE\.config\wezterm"
+git clone https://github.com/<your-username>/wezterm-config.git "$env:USERPROFILE\wezterm-config"
 ```
 
-克隆完成后，`fonts/` 和 `images/` 目录中的文件已随仓库一起下载，重启 WezTerm 即可生效。
+### 2. 创建符号链接
 
-### 2. 启用背景图片（可选）
+WezTerm 默认在 `~/.config/wezterm/`（Linux/macOS）或 `%USERPROFILE%\.config\wezterm\`（Windows）查找配置。需要将仓库中的 `wezterm/` 目录链接到该位置。
 
-1. 打开 `wezterm.lua`，取消 `"config.background"` 那行的注释
-2. 在 `config/background.lua` 顶部的 `options` 表中修改 `fixed_image` 文件名，或设置 `random = true`
-3. 在 `config/appearance.lua` 中将 `window_background_opacity` 调低（建议 `0.85`）
+**Linux / macOS**
+```bash
+ln -s ~/wezterm-config/wezterm ~/.config/wezterm
+```
+
+**Windows（管理员 PowerShell）**
+```powershell
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\wezterm" -Target "$env:USERPROFILE\wezterm-config\wezterm"
+```
+
+克隆并链接完成后，`fonts/` 和 `images/` 目录中的文件已随仓库一起下载，重启 WezTerm 即可生效。
+
+### 3. 启用背景图片（可选）
+
+1. 打开 `wezterm/wezterm.lua`，取消 `"config.background"` 那行的注释
+2. 在 `wezterm/config/background.lua` 顶部的 `options` 表中修改 `fixed_image` 文件名，或设置 `random = true`
+3. 在 `wezterm/config/appearance.lua` 中将 `window_background_opacity` 调低（建议 `0.85`）
 
 ## 键位速查
 
@@ -78,22 +105,22 @@ git clone https://github.com/<your-username>/wezterm.git "$env:USERPROFILE\.conf
 
 ## 个性化
 
-各功能模块对应文件：
+各功能模块对应文件（均在 `wezterm/` 目录下）：
 
 | 想改什么 | 编辑哪个文件 |
 |----------|-------------|
-| 字体 / 字号 / 行高 | `config/fonts.lua` |
-| 配色 / 透明度 / 亚克力效果 / 窗口边距 | `config/appearance.lua` |
-| 光标样式 | `config/appearance.lua` |
-| 标签栏样式 | `config/tab_bar.lua` |
-| 背景图片 | `config/background.lua` |
-| 键位绑定 | `config/keybindings.lua` |
-| 鼠标行为 / 超链接规则 | `config/mouse.lua` |
-| 默认 Shell / 启动菜单 / SSH | `config/shell.lua` |
-| 可切换的配色方案列表 | `config/constants.lua` |
-| 滚动行数 / 退出行为 | `config/advanced.lua` |
+| 字体 / 字号 / 行高 | `wezterm/config/fonts.lua` |
+| 配色 / 透明度 / 亚克力效果 / 窗口边距 | `wezterm/config/appearance.lua` |
+| 光标样式 | `wezterm/config/appearance.lua` |
+| 标签栏样式 | `wezterm/config/tab_bar.lua` |
+| 背景图片 | `wezterm/config/background.lua` |
+| 键位绑定 | `wezterm/config/keybindings.lua` |
+| 鼠标行为 / 超链接规则 | `wezterm/config/mouse.lua` |
+| 默认 Shell / 启动菜单 / SSH | `wezterm/config/shell.lua` |
+| 可切换的配色方案列表 | `wezterm/config/constants.lua` |
+| 滚动行数 / 退出行为 | `wezterm/config/advanced.lua` |
 
 ## 依赖
 
 - [WezTerm](https://wezfurlong.org/wezterm/) ≥ 20240203
-- 字体：[Maple Mono NF CN](https://github.com/subframe7536/maple-font)（或替换为任意 Nerd Font，修改 `config/fonts.lua`）
+- 字体：[Maple Mono NF CN](https://github.com/subframe7536/maple-font)（或替换为任意 Nerd Font，修改 `wezterm/config/fonts.lua`）
